@@ -1,4 +1,4 @@
-from pickle import DICT
+import itertools as it
 import random
 import string
 
@@ -70,27 +70,36 @@ def is_anagram(tiles:list,dict_word:str):
     word_2_list.sort()
     return word_1_list == word_2_list
 
+
+def get_power_set(tiles:list):
+    power_set_lists = []
+    power_set = []
+    for i in range(1,len(tiles)+1):
+        power_set_lists.append(list(it.combinations(tiles,i)))
+    for lists in power_set_lists:
+        for item in lists:
+            power_set.append(list(item))
+    return power_set
+
 def find_valid_word(tiles:list):
-    for i in range(len(tiles)):
-        for j in range(i,len(tiles)):
-            sub_tile = tiles[i:j]
-            print(sub_tile)
-            for word in DICTIONARY_LIST:
-                if is_anagram(sub_tile,word):
-                    return word
+    all_permutations = get_power_set(tiles)
+    for sub_tile in all_permutations:
+        for word in DICTIONARY_LIST:
+            if is_anagram(sub_tile,word) and word != '':
+                return word
     return None
+
 
 def find_valid_words(tiles:list):
     possible_words = []
     dict_list = DICTIONARY_LIST
-    for i in range(len(tiles)):
-        for j in range(i,len(tiles)):
-            sub_tile = tiles[i:j]
-            for word in dict_list:
-                if is_anagram(sub_tile,word):
-                    possible_words.append(word)
-                    dict_list.remove(word)
-        return possible_words
+    all_permutations = get_power_set(tiles)
+    for sub_tile in all_permutations:
+        for word in dict_list:
+            if is_anagram(sub_tile,word):
+                possible_words.append(word)
+                dict_list.remove(word)
+    return possible_words
 
 def find_longest_word(words:list):
     if len(words) == 0:
@@ -98,4 +107,4 @@ def find_longest_word(words:list):
     return max(words)
 
 tiles = get_tiles()
-print(find_valid_word(tiles))
+print(find_valid_words(tiles))
