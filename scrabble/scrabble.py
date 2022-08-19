@@ -106,5 +106,19 @@ def find_longest_word(words:list):
         return None
     return max(words)
 
-tiles = get_tiles()
-print(find_valid_words(tiles))
+def find_longest_scrabble_word(tiles:list):
+    return find_longest_word(find_valid_words(tiles))
+
+def find_best_scoring_scrabble_word(tiles:list,verbose:bool = True):
+    scrabble_words = find_valid_words(tiles)
+    max_score = 0
+    return_word = ''
+    for word in scrabble_words:
+        word_score = get_word_score(word)
+        if word_score > max_score:
+            max_score = word_score
+            return_word = word
+    if verbose: 
+        return f'{return_word}: {max_score}'
+    else:
+        return word,max_score
