@@ -39,16 +39,22 @@ def get_bag():
 def is_in_bag(bag,letter):
     return bag[letter] != 0
 
+def get_letter(bag):
+    random_index = random.randint(0,25)
+    random_letter = ALPHABET[random_index]
+    while not is_in_bag(bag,random_letter):
+        random_index = random.randint(0,25)
+        random_letter = ALPHABET[random_index]
+    return random_letter
+    
+
 def get_tiles(num = 7):
     hand = []
     bag = get_bag()
     for i in range(num):
-        random_index = random.randint(0,25)
-        random_letter = ALPHABET[random_index]
-        while not is_in_bag(bag,random_letter):
-            random_index = random.randint(0,25)
-            random_letter = ALPHABET[random_index]
+        random_letter = get_letter(bag)
         hand.append(random_letter)
         bag[random_letter] -= 1
     return hand
 
+print(get_tiles())
