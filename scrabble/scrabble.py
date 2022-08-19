@@ -33,7 +33,7 @@ def get_bag():
     bag = {
         'E':12,
         'A':9,'I':9,
-        '0':8,
+        'O':8,
         'N':6,'R':6,'T':6,
         'L':4,'S':4,'U':4,'D':4,
         'G':3,
@@ -74,6 +74,7 @@ def find_valid_word(tiles:list):
     for i in range(len(tiles)):
         for j in range(i,len(tiles)):
             sub_tile = tiles[i:j]
+            print(sub_tile)
             for word in DICTIONARY_LIST:
                 if is_anagram(sub_tile,word):
                     return word
@@ -95,3 +96,6 @@ def find_longest_word(words:list):
     if len(words) == 0:
         return None
     return max(words)
+
+tiles = get_tiles()
+print(find_valid_word(tiles))
