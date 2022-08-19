@@ -8,10 +8,10 @@ dictionary_data = dictionary.read()
 DICTIONARY_LIST = dictionary_data.replace('\n','.').split('.')
 ALPHABET = [*string.ascii_uppercase]
 
-def get_chars_of_word(word):
+def get_chars_of_word(word:str):
     return [*word]
 
-def get_letter_score(letter):
+def get_letter_score(letter:str):
     score_dict = {
         'E':1,'A':1,'I':1,'O':1,'N':1,'R':1,'T':1,'L':1,'S':1,'U':1,
         'D':2,'G':2,
@@ -22,7 +22,7 @@ def get_letter_score(letter):
         'Q':10,'Z':10}
     return score_dict[letter]
 
-def get_word_score(word):
+def get_word_score(word:str):
     characters = get_chars_of_word(word)
     word_score = 0
     for char in characters:
@@ -42,10 +42,10 @@ def get_bag():
     }
     return bag
 
-def is_in_bag(bag,letter):
+def is_in_bag(bag:dict,letter:str):
     return bag[letter] != 0
 
-def get_letter(bag):
+def get_letter(bag:dict):
     random_index = random.randint(0,25)
     random_letter = ALPHABET[random_index]
     while not is_in_bag(bag,random_letter):
@@ -54,7 +54,7 @@ def get_letter(bag):
     return random_letter
     
 
-def get_tiles(num = 7):
+def get_tiles(num:int = 7):
     hand = []
     bag = get_bag()
     for i in range(num):
@@ -63,27 +63,35 @@ def get_tiles(num = 7):
         bag[random_letter] -= 1
     return hand
 
-def is_anagram(word1,word2):
-    word_1_list = list(word1)
+def is_anagram(tiles:list,dict_word:str):
+    word_1_list = list(tiles)
     word_1_list.sort()
-    word_2_list = list(word2)
+    word_2_list = list(dict_word.upper())
     word_2_list.sort()
     return word_1_list == word_2_list
 
-def find_valid_word(tiles):
-    for word in DICTIONARY_LIST:
-        if is_anagram(tiles,word):
-            return word
+def find_valid_word(tiles:list):
+    for i in range(len(tiles)):
+        for j in range(i,len(tiles)):
+            sub_tile = tiles[i:j]
+            for word in DICTIONARY_LIST:
+                if is_anagram(sub_tile,word):
+                    return word
     return None
 
-def find_valid_words(tiles):
+def find_valid_words(tiles:list):
     possible_words = []
+    dict_list = DICTIONARY_LIST
     for i in range(len(tiles)):
-        sub_tile = tiles[i:]
-        for word in DICTIONARY_LIST:
-            if is_anagram(sub_tile,word):
-                possible_words.append(word)
-    return possible_words
+        for j in range(i,len(tiles)):
+            sub_tile = tiles[i:j]
+            for word in dict_list:
+                if is_anagram(sub_tile,word):
+                    possible_words.append(word)
+                    dict_list.remove(word)
+        return possible_words
 
-
-
+def find_longest_word(words:list):
+    if len(words) == 0:
+        return None
+    return max(words)
