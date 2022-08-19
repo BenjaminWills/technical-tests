@@ -75,6 +75,15 @@ def find_valid_word(tiles):
         if is_anagram(tiles,word):
             return word
     return None
-    
+
+def find_valid_words(tiles):
+    possible_words = []
+    for i in range(len(tiles)):
+        sub_tile = tiles[i:]
+        for word in DICTIONARY_LIST:
+            if is_anagram(sub_tile,word):
+                possible_words.append(word)
+    return possible_words
+
 
 
