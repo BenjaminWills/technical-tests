@@ -1,5 +1,11 @@
+from pickle import DICT
 import random
 import string
+
+dictionary = open('dictionary.txt','r')
+dictionary_data = dictionary.read()
+
+DICTIONARY_LIST = dictionary_data.replace('\n','.').split('.')
 ALPHABET = [*string.ascii_uppercase]
 
 def get_chars_of_word(word):
@@ -57,4 +63,18 @@ def get_tiles(num = 7):
         bag[random_letter] -= 1
     return hand
 
-print(get_tiles())
+def is_anagram(word1,word2):
+    word_1_list = list(word1)
+    word_1_list.sort()
+    word_2_list = list(word2)
+    word_2_list.sort()
+    return word_1_list == word_2_list
+
+def find_valid_word(tiles):
+    for word in DICTIONARY_LIST:
+        if is_anagram(tiles,word):
+            return word
+    return None
+    
+
+
